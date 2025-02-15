@@ -37,11 +37,14 @@ function VFrame:playerData(playerInfo)
         mana = tonumber(mana)
         maxMana = tonumber(maxMana)
 
-        self.form[slot].hpBar:setValue(hp, maxHp, "<b>"..hp.."hp</b>")
+        local hpPct = hp / maxHp
+        local mnPct = mana / maxMana
+
+        self.form[slot].hpBar:setValue(hp, maxHp, string.format("<b>%.0f  %d hp</b>", hpPct, hp))
         local hpSheet = self:getStyleSheet(hp, maxHp)
         self.form[slot].hpBar.front:setStyleSheet(hpSheet)
 
-        self.form[slot].manaBar:setValue(mana, maxMana, "<b>"..mana.."mn</b>")
+        self.form[slot].manaBar:setValue(mana, maxMana, string.format("<b>%.0f  %d mn</b>", mnPct, mana))
         local manaSheet = self:getStyleSheet(mana, maxMana)
         self.form[slot].manaBar.front:setStyleSheet(manaSheet)
 
@@ -53,7 +56,10 @@ end
 
 
 function VFrame.registerPlayer(name)
-    table.insert(VFrame.registered, name)
+    local tblIdx = table.index_of(VFrame.registered, name)
+    if not tblIdx then
+        table.insert(VFrame.registered, name)
+    end
 end
 
 function VFrame.listAvailable()
@@ -145,10 +151,8 @@ end
 
 function VFrame:addPlayer(playerName)
 
-    local plrIdx = table.index_of(playerName)
-    if plrIdx then
-        table.remove(VFrame.registered, plrIdx)
-    else
+    local plrIdx = table.index_of(VFrame.registered, playerName)
+    if not plrIdx then
         cecho("<orange>Player <yellow>"..playerName.."<orange> not found\n")
         return
     end
