@@ -61,7 +61,7 @@ function VFrame.listAvailable()
     for k, v in pairs(VFrame.registered) do
         echo(v .. "\n")
     end
-    cecho("<white>Type <yellow>/vfadd <player><white> to add them to your frame\n")
+    cecho("<white>Type <yellow>vfadd <player><white> to add them to your frame\n")
 end
 
 
@@ -145,6 +145,14 @@ end
 
 function VFrame:addPlayer(playerName)
 
+    local plrIdx = table.index_of(playerName)
+    if plrIdx then
+        table.remove(VFrame.registered, plrIdx)
+    else
+        cecho("<orange>Player <yellow>"..playerName.."<orange> not found\n")
+        return
+    end
+
     self:setupContainers()
 
     local found, slot = self:findEmptySlot(playerName)
@@ -182,10 +190,6 @@ function VFrame:addPlayer(playerName)
 
         self.grid[slot]:flash()
 
-        local plrIdx = table.index_of(playerName)
-        if plrIdx then
-            table.remove(VFrame.registered, plrIdx)
-        end
     end
 
 end
