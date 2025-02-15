@@ -37,14 +37,14 @@ function VFrame:playerData(playerInfo)
         mana = tonumber(mana)
         maxMana = tonumber(maxMana)
 
-        local hpPct = hp / maxHp
-        local mnPct = mana / maxMana
+        local hpPct = hp / maxHp * 100
+        local mnPct = mana / maxMana * 100
 
-        self.form[slot].hpBar:setValue(hp, maxHp, string.format("<b>%.0f  %d hp</b>", hpPct, hp))
+        self.form[slot].hpBar:setValue(hp, maxHp, string.format("<b>%.0f%%  %d hp</b>", hpPct, hp))
         local hpSheet = self:getStyleSheet(hp, maxHp)
         self.form[slot].hpBar.front:setStyleSheet(hpSheet)
 
-        self.form[slot].manaBar:setValue(mana, maxMana, string.format("<b>%.0f  %d mn</b>", mnPct, mana))
+        self.form[slot].manaBar:setValue(mana, maxMana, string.format("<b>%.0f%%  %d mn</b>", mnPct, mana))
         local manaSheet = self:getStyleSheet(mana, maxMana)
         self.form[slot].manaBar.front:setStyleSheet(manaSheet)
 
